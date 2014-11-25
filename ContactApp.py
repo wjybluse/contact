@@ -50,22 +50,22 @@ def signup():
     return render_template('profile.html', user=user)
 
 
-@app.route('/profile/<phone>', methods=['GET', 'POST'])
+@app.route('/profile/<id>', methods=['GET', 'POST'])
 @app.errorhandler(500)
-def profile(phone=None):
+def profile(id=None):
     if not validate.is_login():
         return render_template('login.html')
     if request.method == 'GET':
-        user = User.find_user(db, phone=phone)
+        user = User.find_user(db, id=id)
         logger.info("Find the user %s", user.__dict__)
         return render_template('profile.html', user=user)
     f = request.files['file']
     fn = secure_filename(f.filename)
-    os.makedirs(os.path.join(UPLOAD, phone))
-    p = os.path.join(os.path.join(UPLOAD, phone), fn)
+    os.makedirs(os.path.join(UPLOAD, id))
+    p = os.path.join(os.path.join(UPLOAD, id), fn)
     f.save(p)
-    db.update({'phone': phone}, path=p, **covert_data())
-    return render_template('user.html', user=User.find_user(db, phone=phone))
+    db.update({'id': id}, path=p, **covert_data())
+    return render_template('user.html', user=User.find_user(db, id=id))
 
 
 def covert_data():
@@ -98,7 +98,7 @@ def person(cls=None):
     return render_template('person.html', users)
 
 
-@app.route('/logout/<user>', methods=['DELETE'])
+@app.route('/logout', methods=['DELETE'])
 def logout():
     session.pop('_user')
     return render_template('login.html')
