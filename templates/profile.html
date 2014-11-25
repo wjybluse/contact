@@ -1,0 +1,45 @@
+{% extends '_base.html' %}
+{% block content %}
+    <div class="row">
+        <form action="/profile/{{ user.phone }}" method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Update Profile Information</legend>
+                <!-- photo -->
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label for="right-label" class="right inline">Photo:</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="file" name="file" class="small">
+                    </div>
+                </div>
+
+                <!-- address -->
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label for="right-label" class="right inline">Address:</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="text" name="_address" class="small">
+                    </div>
+                </div>
+
+                <!--company -->
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label for="right-label" class="right inline">Company:</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="text" name="_company" class="small">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-6  small-centered columns">
+                        <input type="submit" name="submit" class="small button" value="Update">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

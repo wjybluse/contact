@@ -1,0 +1,43 @@
+{% extends '_base.html' %}
+{% block content %}
+    <div class="small-6  small-centered columns">
+        <form action="/login" method="post">
+            <!-- name row -->
+            <div class="row">
+                <div class="small-6 small-centered columns">
+                    <h2 class="subheader">用户登录</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">用户名:</label>
+                </div>
+                <div class="small-9 columns">
+                    <input type="text" id="right-label" name='_user' placeholder="your name" required
+                           pattern="[a-zA-Z0-9]+">
+                </div>
+            </div>
+
+            <!-- password row -->
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">密 码:</label>
+                </div>
+                <div class="small-9 columns">
+                    <input type="password" id="right-label" name='_password' placeholder="your password" required
+                           pattern="[a-zA-Z0-9]+">
+                </div>
+            </div>
+
+            <!--button -->
+            <div class="row">
+                <div class="small-6  small-centered columns">
+                    <ul class="stack-for-small round secondary button-group">
+                        <input type="submit" class="small button" value="登陆">
+                        <li><a href="/signup" class="small button" id="signup">注册</a></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
