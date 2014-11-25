@@ -1,0 +1,8 @@
+{% extends '_base.html' %}
+{% block content %}
+    {%  for user in users %}
+         <a class="th [radius]" href="#">
+          <img src="{{ user.photo }}">
+        </a>
+    {%  endfor %}
+{%  endblock %}

@@ -1,0 +1,96 @@
+{% extends '_base.html' %}
+{% block content %}
+    <div class="small-6  small-centered columns">
+        <form action="/signup" method="post">
+            <!-- name row -->
+            <div class="row">
+                <div class="small-6 small-centered columns">
+                    <h2 class="subheader">Sign Up</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">UserName:</label>
+                </div>
+                <div class="small-9 columns">
+                    <input type="text" id="right-label" name='_user' placeholder="your name" required
+                           pattern="[a-zA-Z0-9]+">
+                </div>
+            </div>
+
+            <!-- password row -->
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">Password:</label>
+                </div>
+                <div class="small-9 columns">
+                    <input type="password" id="right-label" name='_password' placeholder="your password" required
+                           pattern="[a-zA-Z0-9]+">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">Email:</label>
+                </div>
+                <div class="small-9 columns">
+                    <input type="text" id="right-label" name='email' placeholder="example@example.com" required
+                           pattern="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">Phone:</label>
+                </div>
+                <div class="small-9 columns">
+                    <input type="text" id="right-label" name='phone' placeholder="phone number" required
+                           pattern="((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">Class:</label>
+                </div>
+                <div class="small-9 columns">
+                    <select name='_class'>
+                        <option class="32">2</option>
+                        <option class="31">1</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">Questions:</label>
+                </div>
+                <div class="small-9 columns">
+                    <select name='question'>
+                        <option class="1">Leader of your class?</option>
+                        <option class="2">The name of school?</option>
+                        <option class="3">Your true name?</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">Answer:</label>
+                </div>
+                <div class="small-9 columns">
+                    <input type="text" id="right-label" name='answer' placeholder="your password" required>
+                </div>
+            </div>
+
+
+            <!--button -->
+            <div class="row">
+                <div class="small-6  small-centered columns">
+                    <input type="submit" class="small button" value="注册">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
