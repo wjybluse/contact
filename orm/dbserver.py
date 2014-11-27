@@ -4,10 +4,10 @@ from tools.conf import ConfigUtil
 
 
 class DBServer():
-    def __init__(self, path):
+    def __init__(self, path, collections):
         db_conf = ConfigUtil(path).db_conf()
         self.client = pymongo.MongoClient("mongodb://{0}:{1}".format(db_conf['host'], db_conf['port']))
-        self.db = self.client.contact_user
+        self.db = self.client[collections]
         if len(db_conf['username']) > 0 and len(db_conf['password']) > 0:
             self.db.authenticate(db_conf['username'], password=db_conf['password'])
 
@@ -20,8 +20,8 @@ class DBServer():
 
     def insert(self, **kwargs):
         if 'phone' in kwargs:
-            uid = kwargs['phone'][0]
-            user = self.db.users.find_one({'phone': uid})
+            phone = kwargs['phone'][0]
+            user = self.db.users.find_one({'phone': phone})
             if user:
                 raise ValueError("The phone was sign up!please sign in")
         data = {}
