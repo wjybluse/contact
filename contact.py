@@ -67,7 +67,7 @@ def profile(uid=None):
         os.makedirs(os.path.join(UPLOAD, uid))
     p = os.path.join(os.path.join(UPLOAD, uid), fn)
     f.save(p)
-    db.update({'uid': uid}, path=p, **covert_data())
+    db.update({'uid': uid}, path=p, _company=request.form['_company'], _address=request.form['_address'])
     return render_template('user.html', user=User.find_user(db, uid=uid))
 
 
@@ -80,16 +80,6 @@ def hand_user(uid=None):
     if uid is None or len(uid) <= 0:
         uid = session['_user']
     return render_template('user.html', user=User.find_user(db, uid=uid))
-
-
-def covert_data():
-    data = dict()
-    for k, val in request.form.items():
-        # filter the file and submit
-        if 'file' or 'submit' in k:
-            continue
-        data[str(k)] = val[0]
-    return data
 
 
 @app.errorhandler(401)
