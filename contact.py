@@ -1,7 +1,8 @@
 import os
-from flask import Flask
+import json
+from flask import Flask, render_template_string
 from flask import render_template
-from flask import request, make_response, session, flash, redirect
+from flask import request, session, flash
 from orm.dbserver import DBServer
 from orm.user import User
 from orm.message import Message
@@ -121,11 +122,11 @@ def message_handler(uid=None):
         return render_template('login.html')
     if request.method == 'GET':
         if uid is None:
-            return Message.find_all_message(message)
-        return Message.find_all_message(message, uid=uid)
+            return render_template_string(json.dumps(Message.find_all_message(message)))
+        return render_template_string(message=json.dumps(Message.find_message(message, uid=uid)))
     if request.method == 'POST':
         text = request.form['tweet']
-        data = dict(tweet=text, uid=uid)
+        data = dict(tweet=[text], uid=[uid])
         message.insert(**data)
         return "ok"
     return render_template('_404.html')

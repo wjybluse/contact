@@ -11,9 +11,11 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/foundation.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/contact.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#say").onclick(function () {
-                refresh();
+        $(function () {
+            $("#say").click(function () {
+                var uid = $("#uid").text();
+                var tweet = $("#tweet").val();
+                refresh(uid, tweet);
             });
         });
     </script>
@@ -50,7 +52,7 @@
 <div class="row">
     <div class="large-9 push-3 columns">
         <h3 class="subheader">发布新状态:</h3>
-        <textarea placeholder="Input what you wan to say!" name='tweet'></textarea>
+        <textarea placeholder="Input what you wan to say!" name="tweet" id="tweet"></textarea>
 
         <h3></h3>
 
