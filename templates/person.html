@@ -1,8 +1,11 @@
 {% extends '_base.html' %}
 {% block content %}
-    {%  for user in users %}
-         <a class="th [radius]" href="#">
-          <img src="{{ user.photo }}">
-        </a>
-    {%  endfor %}
-{%  endblock %}
+    <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4" data-clearing>
+        {% for user in users %}
+            <li><a href="/user/{{ user.uid }}">
+                <img aria-label="{{ user._user }}" class="th th-item [radius]" src="/{{ user.path }}"
+                     alt="{{ user._user }}"/>
+            </a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

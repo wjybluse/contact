@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'wan'
 
 
@@ -12,9 +13,9 @@ class Message(object):
 
     @classmethod
     def find_message(cls, db, **kwargs):
-        messages = db.find(**kwargs)
+        messages = db.query(**kwargs)
         data = dict(data=[])
-        if messages is None or len(messages):
+        if messages is None or len(messages) <= 0:
             return data
         ret = parser_message(messages)
         data['data'] = ret
@@ -23,7 +24,7 @@ class Message(object):
 
 def covert_message(obj, message):
     for key, val in message.items():
-        setattr(obj, key, val)
+        setattr(obj, str(key), val)
 
 
 def parser_message(messages):

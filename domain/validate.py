@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'wan'
 from flask import render_template
 

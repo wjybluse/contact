@@ -1,6 +1,10 @@
+# -*- coding: utf-8 -*-
 __author__ = 'wan'
 import pymongo
+
 from tools.conf import ConfigUtil
+
+DEFAULT_SE = ['_user', 'phone', 'email']
 
 
 class DBServer():
@@ -16,18 +20,24 @@ class DBServer():
         for user in self.db.users.find(kwargs):
             user.pop("_id")
             users.append(user)
+        users.sort(key=lambda item: item['datetime'] if 'datetime' in item else -1, reverse=True)
         return users
 
     def insert(self, **kwargs):
-        if 'phone' in kwargs:
-            phone = kwargs['phone'][0]
-            user = self.db.users.find_one({'phone': phone})
-            if user:
-                raise ValueError("The phone was sign up!please sign in")
+        self.validate(**kwargs)
         data = {}
         for key, val in kwargs.items():
             data[key] = val[0]
         self.db.users.insert(data)
+
+    def validate(self, **kwargs):
+        for key, val in kwargs.items():
+            if key not in DEFAULT_SE:
+                continue
+            user = self.db.users.find_one({key: val[0]})
+            if user:
+                raise ValueError("The phone was sign up!please sign in")
+
 
     def remove(self, **kwargs):
         return self.db.users.remove(kwargs)
@@ -45,6 +55,7 @@ class DBServer():
         for user in self.db.users.find():
             user.pop("_id")
             users.append(user)
+        users.sort(key=lambda item: item['datetime'] if 'datetime' in item else -1, reverse=True)
         return users
 
     def close(self):

@@ -2,13 +2,14 @@
 <html>
 <head lang="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
+    <title>User</title>
     <link rel="stylesheet" href="/static/css/foundation.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/normalize.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/contact.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static',filename='img/favicon.ico') }}">
     <script type="text/javascript" src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/foundation.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/contact.js') }}"></script>
     <script type="text/javascript"
             src="{{ url_for('static',filename='js/foundation/foundation.dropdown.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/foundation/foundation.alert.js') }}"></script>
@@ -17,8 +18,14 @@
     <script type="text/javascript">
         $(document).foundation();
         $(function () {
-            $('#logout').bind('click', function () {
+            $("#logout").click(function () {
                 log_out();
+            });
+            msg_all('{{ user.uid }}');
+            $("#say").click(function () {
+                var uid = $("#uid").text();
+                var tweet = $("#tweet").val();
+                refresh(uid, tweet);
             });
         });
     </script>
@@ -48,12 +55,45 @@
 
         <!-- Left Nav Section -->
         <ul class="left">
-            <li><a href="#">Contacts</a></li>
+            <li><a href="/person/{{ user._class }}">Contacts</a></li>
         </ul>
     </section>
 </nav>
 <div class="row">
-    {% block content %}{% endblock %}
+    <div class="large-9 push-3 columns">
+        <h1></h1>
+
+        <h3 class="subheader">最新说说:</h3>
+
+        <div class="row" id='content'>
+            <div class="panel callout radius">This is a test</div>
+        </div>
+    </div>
+
+    <div class="large-3 pull-9 columns">
+        <a class="th" role="button" aria-label="Thumbnail" href="{{ user.path }}">
+            <img aria-hidden=true src="/{{ user.path }}"/>
+        </a>
+        <ul class="side-nav">
+            <li>Name : {{ user._user }}</li>
+            <li>Phone : {{ user.phone }}</li>
+            <li>Email : {{ user.email }}</li>
+            <li>Company: {{ user._company }}</li>
+            <li>Address: {{ user._address }}</li>
+        </ul>
+    </div>
 </div>
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr/>
+        <div class="row">
+            <div class="large-6 columns">
+                <p>© Copyright wan company.</p>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
+   

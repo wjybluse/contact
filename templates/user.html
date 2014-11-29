@@ -10,12 +10,23 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/foundation.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/contact.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='js/foundation/foundation.dropdown.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/foundation/foundation.alert.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='js/foundation/foundation.joyride.js') }}"></script>
     <script type="text/javascript">
+        $(document).foundation();
         $(function () {
+            $("#logout").click(function () {
+                log_out();
+            });
+            msg_all('{{ user.uid }}');
             $("#say").click(function () {
                 var uid = $("#uid").text();
                 var tweet = $("#tweet").val();
                 refresh(uid, tweet);
+                $("#tweet").val("");
             });
         });
     </script>
@@ -33,7 +44,7 @@
     <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
-            <li class="active"><a href="#">Login</a></li>
+            <li class="active"><a href="#" id="logout">Logout</a></li>
             <li class="has-dropdown">
                 <a href="#">About</a>
                 <ul class="dropdown">
@@ -45,14 +56,14 @@
 
         <!-- Left Nav Section -->
         <ul class="left">
-            <li><a href="#">Contacts</a></li>
+            <li><a href="/person/{{ user._class }}">Contacts</a></li>
         </ul>
     </section>
 </nav>
 <div class="row">
     <div class="large-9 push-3 columns">
         <h3 class="subheader">发布新状态:</h3>
-        <textarea placeholder="Input what you wan to say!" name="tweet" id="tweet"></textarea>
+        <textarea class="radius" placeholder="Input what you wan to say!" name="tweet" id="tweet"></textarea>
 
         <h3></h3>
 
@@ -68,8 +79,8 @@
     </div>
 
     <div class="large-3 pull-9 columns">
-        <a class="th" role="button" aria-label="Thumbnail" href="{{ user.path }}">
-            <img aria-hidden=true src="{{ user.path }}"/>
+        <a class="th th-item" role="button" aria-label="Thumbnail" href="{{ user.path }}">
+            <img aria-hidden=true src="/{{ user.path }}"/>
         </a>
         <ul class="side-nav">
             <li>Name : {{ user._user }}</li>
@@ -81,7 +92,7 @@
     </div>
 </div>
 
-<footer class="row">
+<footer class="row center">
     <div class="large-12 columns">
         <hr/>
         <div class="row">

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'wan'
 import logging
 
@@ -14,7 +15,7 @@ class User(object):
                 continue
             if isinstance(value, list):
                 value = value[0]
-            setattr(user, str(key), str(value))
+            setattr(user, str(key), value)
         return user
 
     @classmethod
@@ -35,3 +36,7 @@ class User(object):
             users.append(cls.covert(user))
         logging.info("Find the users %s", str(user))
         return users
+
+    @classmethod
+    def find_by_condition(cls, db, **kwargs):
+        return db.query(**kwargs)
