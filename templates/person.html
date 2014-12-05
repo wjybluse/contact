@@ -26,10 +26,14 @@
 <!-- end python flash code -->
     <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4" data-clearing>
         {% for user in users %}
-            <li><a href="/user/{{ user.uid }}">
+            <li>
+            <span data-tooltip aria-haspopup="true" class="has-tip" data-options="show_on:large" title="{{ user._user }}">
+            <a href="/user/{{ user.uid }}">
                 <img aria-label="{{ user._user }}" class="th th-item [radius]" src="/{{ user.path }}"
                      alt="{{ user._user }}"/>
-            </a></li>
+            </a>
+            </span>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}
