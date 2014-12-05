@@ -14,19 +14,32 @@ from orm.dbserver import DBServer
 from orm.user import User
 from orm.message import Message
 from tools.conf import general_uid
+from gevent.queue import Queue
+from flask import Response
 
+UPLOAD = 'static/upload/'
 
+# global varibale
+chat_room = {}
+message_queue = {}
+# init app
 app = Flask(__name__)
 app.secret_key = '0418fa7f-ec29-40a8-84e1-e4d6c597fbd2'
+
+# init database
 db = DBServer(os.path.join(app.root_path, 'conf/db-config.cfg'), 'contact_user')
 message = DBServer(os.path.join(app.root_path, 'conf/db-config.cfg'), 'contact_message')
+
+# init log handler
 logger = app.logger
 file_handler = logging.FileHandler(os.path.join(app.root_path, 'log/flask.log'))
 file_handler.setLevel(logging.DEBUG)
 logger.addHandler(file_handler)
-UPLOAD = 'static/upload/'
+
+# init socket io
 
 
+# traditional method
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 @app.errorhandler(401)
@@ -35,9 +48,9 @@ def login():
         return render_template('login.html')
     if is_login(session):
         user = User.find_user(db, _user=request.form['_user'])
-        if getattr(user, 'path', None) is not  None:
+        if getattr(user, 'path', None) is not None:
             return render_template('user.html', user=user)
-        flash('Sign up ok!Please compelete your infromation','warning')
+        flash('Sign up ok!Please compelete your infromation', 'warning')
         return render_template('profile.html', user=user)
     user = validate_user(request.form['_user'], request.form['_password'])
     if user is None:
@@ -62,7 +75,7 @@ def signup():
         return render_template('login.html')
     user = User.covert(uid=[uid], **request.form)
     session['_user'] = uid
-    flash('Sign up ok!Please compelete your infromation','warning')
+    flash('Sign up ok ! Please complete your information', 'warning')
     return render_template('profile.html', user=user)
 
 
@@ -153,6 +166,48 @@ def logout():
     if '_user' in session:
         session.pop('_user')
     return render_template('login.html')
+
+
+# server send event
+@app.route('/chat_room/<room>/<user>', methods=['GET', 'POST', 'DELETE'])
+@app.error_handlers(500)
+def chat_room(room=None, user=None):
+    if request.method == 'DELETE':
+        remove_from_room(user, room)
+        return Response(user + " exit!", mimetype="text/event-stream")
+    if request.method == 'GET':
+        if room is None or user is None:
+            raise ValueError("room id can not be empty")
+        flush_room(user, room)
+        return Response(user + " has entered!", mimetype="text/event-stream")
+    data = request.form['data']
+    if request.form['data'] is None:
+        raise ValueError("Can not support empty message")
+    return Response(data, mimetype="text/event-stream")
+
+
+@app.route('/destroy/<room>')
+def destroy_room(room=None):
+    if room is None:
+        return ""
+    if room in chat_room:
+        chat_room.pop(room)
+        return "Destroy the chat room!"
+    return ""
+
+
+def remove_from_room(user, room):
+    if room in chat_room:
+        chat_room[room].peek(user)
+
+
+def flush_room(user, room):
+    if room not in chat_room:
+        chat_room[room] = Queue()
+        chat_room[room].put(user)
+    else:
+        if not chat_room[room].get(user):
+            chat_room[room].put(user)
 
 
 def find_user(username, password):
