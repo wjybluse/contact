@@ -18,6 +18,7 @@
     <script type="text/javascript">
         $(document).foundation();
         $(function () {
+            close_flash();
             $("#logout").click(function () {
                 log_out();
             });
@@ -61,7 +62,33 @@
     </section>
 </nav>
 <div class="row">
+<!-- python flash code -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category,message in messages %}
+            {% if category=='error' %}
+              <div data-alert class="alert-box alert radius">
+                {{ message }}
+                <a href="#" class="close">&times;</a>
+              </div>
+            {% elif category=='success' %}
+              <div data-alert class="alert-box success radius">
+                {{ message }}
+                <a href="#" class="close">&times;</a>
+            </div>
+            {% else %}
+              <div data-alert class="alert-box warning round">
+                {{ message }}
+                <a href="#" class="close">&times;</a>
+            </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+    {% endwith %}
+<!-- python flash code -->
+
     <div class="large-9 push-3 columns">
+        <h1>   </h1>
         <h3 class="subheader">发布新状态:</h3>
         <textarea class="radius" placeholder="Input what you wan to say!" name="tweet" id="tweet"></textarea>
 
@@ -79,8 +106,8 @@
     </div>
 
     <div class="large-3 pull-9 columns">
-        <a class="th th-item" role="button" aria-label="Thumbnail" href="{{ user.path }}">
-            <img aria-hidden=true src="/{{ user.path }}"/>
+        <a href="/{{ user.path }}">
+            <img class="th th-item [radius]" aria-hidden=true src="/{{ user.path }}"/>
         </a>
         <ul class="side-nav">
             <li>Name : {{ user._user }}</li>

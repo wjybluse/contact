@@ -14,9 +14,11 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/foundation/foundation.alert.js') }}"></script>
     <script type="text/javascript"
             src="{{ url_for('static',filename='js/foundation/foundation.joyride.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/contact.js') }}"></script>
     <script type="text/javascript">
         $(document).foundation();
         $(function () {
+            close_flash();
             $('#logout').bind('click', function () {
                 log_out();
             });
@@ -36,7 +38,7 @@
     <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
-            <li class="active"><a href="#" id="logout">Logout</a></li>
+            <li class="active"><a href="/logout" id="logout">Logout</a></li>
             <li class="has-dropdown">
                 <a href="#">About</a>
                 <ul class="dropdown">
@@ -53,7 +55,8 @@
     </section>
 </nav>
 <div class="row">
-    {% block content %}{% endblock %}
+{% block content %}
+{% endblock %}
 </div>
 </body>
 </html>

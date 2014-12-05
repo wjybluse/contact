@@ -1,5 +1,29 @@
 {% extends '_base.html' %}
 {% block content %}
+   <!-- python flash code -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category,message in messages %}
+            {% if category=='error' %}
+              <div data-alert class="alert-box alert radius">
+                {{ message }}
+                <a href="#" class="close">&times;</a>
+              </div>
+            {% elif category=='success' %}
+              <div data-alert class="alert-box success radius">
+                {{ message }}
+                <a href="#" class="close">&times;</a>
+            </div>
+            {% else %}
+              <div data-alert class="alert-box warning round">
+                {{ message }}
+                <a href="#" class="close">&times;</a>
+            </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+    {% endwith %}
+<!-- end python flash code -->
     <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4" data-clearing>
         {% for user in users %}
             <li><a href="/user/{{ user.uid }}">

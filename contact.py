@@ -35,14 +35,17 @@ def login():
         return render_template('login.html')
     if is_login(session):
         user = User.find_user(db, _user=request.form['_user'])
-        if user.path:
+        if getattr(user, 'path', None) is not  None:
             return render_template('user.html', user=user)
+        flash('Sign up ok!Please compelete your infromation','warning')
         return render_template('profile.html', user=user)
     user = validate_user(request.form['_user'], request.form['_password'])
     if user is None:
         flash("Invalid username/password or the user does not exist", 'error')
-        return render_template('signup.html')
+        return render_template('login.html')
     session['_user'] = user.uid
+    if getattr(user, 'path', None) is None:
+        return render_template('profile.html', user=user)
     return render_template('user.html', user=user)
 
 
@@ -59,6 +62,7 @@ def signup():
         return render_template('login.html')
     user = User.covert(uid=[uid], **request.form)
     session['_user'] = uid
+    flash('Sign up ok!Please compelete your infromation','warning')
     return render_template('profile.html', user=user)
 
 
@@ -104,7 +108,7 @@ def user_handler(uid=None):
 def validate_user(username, password):
     user = find_user(username, password)
     if user is None:
-        logger.error("Invalid username {0} or {1} password", username, password)
+        logger.error("Invalid username %s or %s password", username, password)
         return None
     logger.info("find the user %s %s", username, password)
     return user

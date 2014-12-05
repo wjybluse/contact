@@ -79,3 +79,9 @@ function is_uuid(str) {
     }
     return true;
 }
+
+function close_flash(){
+    $('.close').click(function(){
+        $(this).parent().remove();
+    });
+}
